@@ -21,7 +21,10 @@ model, scaler_amount, scaler_time = load_models()
 # ── Cache dataset ─────────────────────────────────────────────────────────────
 @st.cache_data
 def load_dataset():
-    return pd.read_csv("Data/creditcard.csv")
+    url = "https://storage.googleapis.com/download.tensorflow.org/data/creditcard.csv"
+    df = pd.read_csv(url)
+    df = df.sample(5000, random_state=42)  # smaller dataset for faster app
+    return df
 
 df         = load_dataset()
 fraud_rate = (df["Class"].sum() / len(df)) * 100
